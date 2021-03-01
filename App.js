@@ -1,9 +1,18 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const app = express()
 const mongodb = 'mongodb+srv://Samrat:sam@cluster0.blkuc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
-app.set('view engine','ejs');
+mongoose.connect(mongodb,{useNewUrlParser:true , useUnifiedTopology: true }).then(() => {
+    console.log('connected')
+    app.listen(3000);
+})
+.catch(err => 
+    console.log(err))
+   
+   
+ app.set('view engine','ejs');
 
-app.listen(3000);
+
 
 app.get('/',(req,res) => {
     const items=[
