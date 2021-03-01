@@ -1,7 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const Item = require('./models/items');
+
 const app = express()
-const mongodb = 'mongodb+srv://Samrat:sam@cluster0.blkuc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+const mongodb = 'mongodb+srv://Samrat:sam@cluster0.blkuc.mongodb.net/item-database?retryWrites=true&w=majority';
 mongoose.connect(mongodb,{useNewUrlParser:true , useUnifiedTopology: true }).then(() => {
     console.log('connected')
     app.listen(3000);
@@ -12,16 +14,18 @@ mongoose.connect(mongodb,{useNewUrlParser:true , useUnifiedTopology: true }).the
    
  app.set('view engine','ejs');
 
-
-
 app.get('/',(req,res) => {
-    const items=[
-        {name:'Book',price:1000},
-        {name:'Mobile',price:5000},
-        {name:'copy',price:4789},
-    ]
-   res.render('index',{items});
+   res.redirect('/get-items');
 })
+
+
+app.get('/get-items',(req,res) => {
+    
+    Item.find().then(result => {
+        res.render('index',{items:result});
+    }).catch(err => console.log(err))
+})
+
 
 app.get('/add-item',(req,res) => {
     res.render('add-item');
