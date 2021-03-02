@@ -40,6 +40,15 @@ app.post('/items',(req,res) => {
     }).catch(err=>console.log(err))
 })
 
+app.get('/items/:id',(req,res) => {
+    console.log(req.params)
+    const id = req.params.id;
+    Item.findById(id).then(result => {
+        console.log('result',result);
+        res.render('item-detail',{item:result})
+    })
+})
+
 app.use((req,res) => {
     res.render('error');
 })
